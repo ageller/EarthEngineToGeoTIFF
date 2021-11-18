@@ -1,0 +1,10 @@
+# python #
+###################
+*ipynb_checkpoints*
+__pycache__
+*.pyc
+
+# vim files # 
+###################
+*.swp
+
