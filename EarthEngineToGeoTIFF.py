@@ -38,7 +38,6 @@ def getSentinalS2SRImage(lon, lat, sze, filename, dateMin = '2020-04-01', dateMa
     ]
     aoi = ee.Geometry.Polygon(coords)
 
-    bands = ['B4', 'B3', 'B2']
     # get the image using Google's Earth Engine
     db = ee.Image(ee.ImageCollection('COPERNICUS/S2_SR')\
                        .filterBounds(aoi)\
@@ -48,6 +47,10 @@ def getSentinalS2SRImage(lon, lat, sze, filename, dateMin = '2020-04-01', dateMa
     
     # add the latitude and longitude
     db = db.addBands(ee.Image.pixelLonLat())
+
+    # define the bands that I want to use.  B4 is red, B3 is green, B2 is blue
+    # https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S2_SR#bands
+    bands = ['B4', 'B3', 'B2']
 
     # export geotiff images, these go to Drive and then are downloaded locally
     for selection in bands:
@@ -71,7 +74,7 @@ def getSentinalS2SRImage(lon, lat, sze, filename, dateMin = '2020-04-01', dateMa
         filenameZip = selection+'.zip'
         filenameTif = selection+'.tif'
 
-        #unzip and write the tif file, then remove the original zip file
+        # unzip and write the tif file, then remove the original zip file
         with open(filenameZip, "wb") as fd:
             for chunk in r.iter_content(chunk_size=1024):
                 fd.write(chunk)
@@ -86,18 +89,20 @@ def getSentinalS2SRImage(lon, lat, sze, filename, dateMin = '2020-04-01', dateMa
     
         zipdata.close()
         
-    #create a combined RGB geotiff image
-    #https://gis.stackexchange.com/questions/341809/merging-sentinel-2-rgb-bands-with-rasterio
+    # create a combined RGB geotiff image
+    # https://gis.stackexchange.com/questions/341809/merging-sentinel-2-rgb-bands-with-rasterio
     print('Creating 3-band GeoTIFF image ... ')
     
+    # open the images
     B2 = rasterio.open('B2.tif')
     B3 = rasterio.open('B3.tif')
     B4 = rasterio.open('B4.tif')
 
-    #get the scaling
+    # get the scaling
     image = np.array([B2.read(1), B3.read(1), B4.read(1)]).transpose(1,2,0)
     p2, p98 = np.percentile(image, (2,98))
 
+    # use the B2 image as a starting point so that I keep the same parameters
     B2_geo = B2.profile
     B2_geo.update({'count': 3})
 
@@ -110,7 +115,7 @@ def getSentinalS2SRImage(lon, lat, sze, filename, dateMin = '2020-04-01', dateMa
     B3.close()
     B4.close()
     
-    #remove the intermediate files
+    # remove the intermediate files
     for selection in bands:
         os.remove(selection + '.tif')
         os.remove(selection + '.zip')
