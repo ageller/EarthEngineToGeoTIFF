@@ -10,7 +10,8 @@ __pycache__
 
 # data files #
 ###################
-*.csv
+useCases/data/*.csv
+useCases/data/Boundaries_ZIP_Codes/
 
 # in prep
 ####################
