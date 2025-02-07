@@ -1,3 +1,3 @@
 Data sets were downloaded from
- - [311_Service_Requests_-_Pot_Holes_Reported_-_Historical.csv](https://data.cityofchicago.org/Service-Requests/311-Service-Requests-Pot-Holes-Reported-Historical/7as2-ds3y/data)
- - [Boundaries_ZIP_Codes](https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-ZIP-Codes/gdcf-axmw)
+ - [311_Service_Requests_-_Pot_Holes_Reported_-_Historical.csv](https://data.cityofchicago.org/Service-Requests/311-Service-Requests-Pot-Holes-Reported-Historical/7as2-ds3y/data) : click "Export" to download a `.csv` file.  (Warning, this is a 124M file, with ~500k rows.)
+ - [Boundaries_ZIP_Codes](https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-ZIP-Codes/unjd-c2ca/data_preview) : click on "Export" and select "Shapefile" format.  This will download a `.zip` file that you can unpack.  In the notebook, I use the `.shp` file.  (You may prefer to use a different file format.)
